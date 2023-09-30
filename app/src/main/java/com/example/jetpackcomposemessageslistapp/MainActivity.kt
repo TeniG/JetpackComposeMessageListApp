@@ -29,7 +29,8 @@ class MainActivity : ComponentActivity() {
                         .padding(16.dp)
                 ) {
                     Row(
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier
+                            .fillMaxWidth()
                     ) {
                         OutlinedTextField(
                             value = message,
@@ -40,27 +41,39 @@ class MainActivity : ComponentActivity() {
                                 Text(text = "Enter Message")
                             },
                             modifier = Modifier.weight(1f)
-
                         )
                         Spacer(modifier = Modifier.width(16.dp))
                         Button(onClick = {
-                            messageList = messageList + message
-                            message = ""
+                            if (message.isNotBlank()) {
+                                messageList = messageList + message
+                                message = ""
+                            }
                         }) {
                             Text(text = "Add")
                         }
                     }
-                    LazyColumn() {
-                        items(messageList) { item ->
-                            Text(
-                                text = item,
-                                modifier = Modifier.padding(16.dp)
-                            )
-                            Divider()
-                        }
-                    }
+
+                    MessageList(messageList = messageList)
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun MessageList(
+    messageList: List<String>,
+    modifier: Modifier = Modifier
+) {
+    LazyColumn(modifier = modifier) {
+        items(messageList) { item ->
+            Text(
+                text = item,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            )
+            Divider()
         }
     }
 }
